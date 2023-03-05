@@ -1,4 +1,6 @@
-public class ProductInCart {
+import java.io.Serializable;
+
+public class ProductInCart implements Serializable {
     String name;
     int finalyPrice;
 

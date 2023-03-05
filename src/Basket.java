@@ -1,67 +1,69 @@
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Basket {
+public class Basket implements Serializable {
 
     String[] nameProduct;
     int[] priceProduct;
 
-    public Basket(String[] name, int[] price){
+    public Basket(String[] name, int[] price) {
         this.nameProduct = name;
         this.priceProduct = price;
     }
 
-    public void printList(){
+    public void printList() {
         int i = 0;
-        while (i < nameProduct.length){
-            System.out.println(i + 1 + ". " + nameProduct[i] + " " + priceProduct[i] + " руб/шт" );
+        while (i < nameProduct.length) {
+            System.out.println(i + 1 + ". " + nameProduct[i] + " " + priceProduct[i] + " руб/шт");
             i++;
         }
     }
 
     List<ProductInCart> cart = new ArrayList<>();
 
-    public void addToCart(int number, int amount){
+    public void addToCart(int number, int amount) {
         String name = nameProduct[number];
         int finalyPrice = priceProduct[number] * amount;
-        cart.add(new ProductInCart(name,finalyPrice));
+        cart.add(new ProductInCart(name, finalyPrice));
     }
 
-    public void printBasket(){
+    public void printBasket() {
         System.out.println("Ваша корзина:");
         int sum = 0;
-        for (ProductInCart product: cart){
+        for (ProductInCart product : cart) {
             System.out.println(product.toString());
-            sum+= product.getPrice();
+            sum += product.getPrice();
         }
         System.out.println("Итого: " + sum);
-     }
-
-    public void saveTxt(File textFile) throws IOException {
-        try (PrintWriter out = new PrintWriter(textFile);) {
-            for (ProductInCart product: cart)
-                out.println(product.toString() + " ");
-        } catch (IOException ex) {
-            System.out.println(ex.toString());
-        }
     }
 
-    static void loadFromTxtFile(File textFile) throws IOException {
-
-        try (FileReader input = new FileReader(textFile);){
-            int c;
-            while ((c= input.read()) != -1) {
-                System.out.print((char) c);
+    public void saveBin(File file) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(file);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            for (ProductInCart product : cart) {
+                oos.writeObject(product);
             }
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
+    }
+
+    public static void loadFromBinFile(File file) throws Exception {
+
+        try (FileInputStream fis = new FileInputStream(file);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+            ProductInCart product = null;
+            product = (ProductInCart) ois.readObject();
+            System.out.print(product);
+
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        }
+
 
     }
 }

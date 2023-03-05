@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
         Scanner scanner = new Scanner(System.in);
         Basket basket = new Basket(new String[]{"Хлеб", "Яблоки", "Молоко"}, new int[]{100, 200, 300});
@@ -38,9 +38,9 @@ public class Main {
             }
         }
         //basket.printBasket();
-        File newFile = new File("basket.txt");
-        basket.saveTxt(newFile);
+        File newFile = new File("basket.bin");
+        basket.saveBin(newFile);
         System.out.println("Ваша корзина:");
-        basket.loadFromTxtFile(newFile);
+        basket.loadFromBinFile(newFile);
     }
 }
