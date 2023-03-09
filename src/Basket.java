@@ -43,9 +43,7 @@ public class Basket implements Serializable {
     public void saveBin(File file) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(file);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            for (ProductInCart product : cart) {
-                oos.writeObject(product);
-            }
+            oos.writeObject(cart);
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
@@ -56,9 +54,9 @@ public class Basket implements Serializable {
         try (FileInputStream fis = new FileInputStream(file);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
 
-            ProductInCart product = null;
-            product = (ProductInCart) ois.readObject();
-            System.out.print(product);
+            List<ProductInCart> cart = null;
+            cart = (List<ProductInCart>) ois.readObject();
+            System.out.print(cart.toString());
 
         } catch (IOException ex) {
             System.out.println(ex.toString());
