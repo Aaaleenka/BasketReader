@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class Basket implements Serializable {
 
-    String[] nameProduct;
-    int[] priceProduct;
+    protected String[] nameProduct;
+    protected int[] priceProduct;
 
     public Basket(String[] name, int[] price) {
         this.nameProduct = name;
@@ -22,7 +22,7 @@ public class Basket implements Serializable {
         }
     }
 
-    List<ProductInCart> cart = new ArrayList<>();
+    protected List<ProductInCart> cart = new ArrayList<>();
 
     public void addToCart(int number, int amount) {
         String name = nameProduct[number];
