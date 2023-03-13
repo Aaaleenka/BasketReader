@@ -9,8 +9,9 @@ import java.util.Map;
 
 public class Basket {
 
-    String[] nameProduct;
-    int[] priceProduct;
+    protected String[] nameProduct;
+    protected int[] priceProduct;
+    protected List<ProductInCart> cart = new ArrayList<>();
 
     public Basket(String[] name, int[] price){
         this.nameProduct = name;
@@ -24,8 +25,6 @@ public class Basket {
             i++;
         }
     }
-
-    List<ProductInCart> cart = new ArrayList<>();
 
     public void addToCart(int number, int amount){
         String name = nameProduct[number];
@@ -45,8 +44,7 @@ public class Basket {
 
     public void saveTxt(File textFile) throws IOException {
         try (PrintWriter out = new PrintWriter(textFile);) {
-            for (ProductInCart product: cart)
-                out.println(product.toString() + " ");
+            out.println(cart);
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
