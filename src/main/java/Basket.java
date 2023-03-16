@@ -13,34 +13,34 @@ public class Basket {
     protected int[] priceProduct;
     protected List<ProductInCart> cart = new ArrayList<>();
 
-    public Basket(String[] name, int[] price){
+    public Basket(String[] name, int[] price) {
         this.nameProduct = name;
         this.priceProduct = price;
     }
 
-    public void printList(){
+    public void printList() {
         int i = 0;
-        while (i < nameProduct.length){
-            System.out.println(i + 1 + ". " + nameProduct[i] + " " + priceProduct[i] + " руб/шт" );
+        while (i < nameProduct.length) {
+            System.out.println(i + 1 + ". " + nameProduct[i] + " " + priceProduct[i] + " руб/шт");
             i++;
         }
     }
 
-    public void addToCart(int number, int amount){
+    public void addToCart(int number, int amount) {
         String name = nameProduct[number];
         int finalyPrice = priceProduct[number] * amount;
-        cart.add(new ProductInCart(name,finalyPrice));
+        cart.add(new ProductInCart(name, finalyPrice));
     }
 
-    public void printBasket(){
+    public void printBasket() {
         System.out.println("Ваша корзина:");
         int sum = 0;
-        for (ProductInCart product: cart){
+        for (ProductInCart product : cart) {
             System.out.println(product.toString());
-            sum+= product.getPrice();
+            sum += product.getPrice();
         }
         System.out.println("Итого: " + sum);
-     }
+    }
 
     public void saveTxt(File textFile) throws IOException {
         try (PrintWriter out = new PrintWriter(textFile);) {
@@ -50,11 +50,11 @@ public class Basket {
         }
     }
 
-    static void loadFromTxtFile(File textFile) throws IOException {
+    public static void loadFromTxtFile(File textFile) throws IOException {
 
-        try (FileReader input = new FileReader(textFile);){
+        try (FileReader input = new FileReader(textFile);) {
             int c;
-            while ((c= input.read()) != -1) {
+            while ((c = input.read()) != -1) {
                 System.out.print((char) c);
             }
         } catch (IOException ex) {

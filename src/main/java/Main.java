@@ -1,16 +1,19 @@
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
 
         Scanner scanner = new Scanner(System.in);
         Basket basket = new Basket(new String[]{"Хлеб", "Яблоки", "Молоко"}, new int[]{100, 200, 300});
 
+        ClientLog lg = new ClientLog();
+
+        List<ClientLog> listClientLogs = new ArrayList<>();
         System.out.println("Список возможных товаров для покупки:");
         basket.printList();
 
@@ -31,6 +34,7 @@ public class Main {
                         int productNumber = Integer.parseInt(parts[0]) - 1; // продукт который хотят
                         int productCount = Integer.parseInt(parts[1]); //количество
                         basket.addToCart(productNumber, productCount);
+                        listClientLogs.add(new ClientLog(productNumber + 1, productCount));
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Вы не правильно выполнили ввод");
@@ -38,9 +42,15 @@ public class Main {
             }
         }
         //basket.printBasket();
-        File newFile = new File("basket.txt");
-        basket.saveTxt(newFile);
+
+        File newFile = new File("log.csv");
+
+        lg.exportAsCSV(newFile, listClientLogs);
+
+        File newFile1 = new File("basket.json");
+
+        basket.saveTxt(newFile1);
         System.out.println("Ваша корзина:");
-        basket.loadFromTxtFile(newFile);
+        basket.loadFromTxtFile(newFile1);
     }
 }
