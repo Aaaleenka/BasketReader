@@ -9,10 +9,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         Scanner scanner = new Scanner(System.in);
-        Basket basket = new Basket(new String[]{"Хлеб", "Яблоки", "Молоко"}, new int[]{100, 200, 300});
+        Basket basket = new Basket(new String[]{"Хлеб", "Яблоки", "Молоко"}, new int[]{100, 200, 300}, new int[]{0,0,0});
 
         System.out.println("Список возможных товаров для покупки:");
         basket.printList();
+
 
         while (true) {
             System.out.println("Введите номер продукта и его количество");
@@ -30,17 +31,19 @@ public class Main {
                     } else {
                         int productNumber = Integer.parseInt(parts[0]) - 1; // продукт который хотят
                         int productCount = Integer.parseInt(parts[1]); //количество
-                        basket.addToCart(productNumber, productCount);
+
+                        basket.addToBasket(productNumber,productCount);
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Вы не правильно выполнили ввод");
                 }
             }
         }
-        //basket.printBasket();
+        basket.printBasket();
         File newFile = new File("basket.txt");
         basket.saveTxt(newFile);
         System.out.println("Ваша корзина:");
-        basket.loadFromTxtFile(newFile);
+        basket.loadFromTxtFile(newFile).printBasket();
+
     }
 }

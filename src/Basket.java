@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +8,21 @@ public class Basket {
 
     protected String[] nameProduct;
     protected int[] priceProduct;
-    protected List<ProductInCart> cart = new ArrayList<>();
+    protected int[] countProduct;
 
-    public Basket(String[] name, int[] price){
+    public Basket(String[] name, int[] price, int[] count){
         this.nameProduct = name;
         this.priceProduct = price;
+        this.countProduct = count;
+    }
+
+    private Basket()
+    {
+
+    }
+
+    public void addToBasket(int number, int count){
+        countProduct[number] += count;
     }
 
     public void printList(){
@@ -26,41 +33,54 @@ public class Basket {
         }
     }
 
-    public void addToCart(int number, int amount){
-        String name = nameProduct[number];
-        int finalyPrice = priceProduct[number] * amount;
-        cart.add(new ProductInCart(name,finalyPrice));
-    }
-
     public void printBasket(){
         System.out.println("Ваша корзина:");
         int sum = 0;
-        for (ProductInCart product: cart){
-            System.out.println(product.toString());
-            sum+= product.getPrice();
+        for (int i=0; i< nameProduct.length; i++){
+            System.out.println(nameProduct[i] + " на сумму " + priceProduct[i] * countProduct[i]);
+            sum+= priceProduct[i] * countProduct[i];
         }
         System.out.println("Итого: " + sum);
      }
 
+
     public void saveTxt(File textFile) throws IOException {
         try (PrintWriter out = new PrintWriter(textFile);) {
-            out.println(cart);
+            out.println(nameProduct.length);
+            for (int i=0; i< nameProduct.length; i++) {
+                out.println(nameProduct[i] + " " + priceProduct[i] + " " + countProduct[i]);
+            }
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
     }
 
-    static void loadFromTxtFile(File textFile) throws IOException {
+    public static Basket loadFromTxtFile(File textFile) throws IOException {
 
-        try (FileReader input = new FileReader(textFile);){
-            int c;
-            while ((c= input.read()) != -1) {
-                System.out.print((char) c);
+        try (BufferedReader input = new BufferedReader(new FileReader(textFile))){
+            String s;
+
+            int i = Integer.parseInt(input.readLine());
+            System.out.println(i);
+            String[] namePr = new String[i];
+            int[] price = new int[i];
+            int[] count = new int[i];
+
+            for (int j = 0; j<i; j++) {
+                //System.out.println(s);
+                s = input.readLine();
+                String[] parts = s.split(" ");
+                namePr[j] = parts[0];
+                price[j] = Integer.parseInt(parts[1]);
+                count[j] = Integer.parseInt(parts[2]);
             }
+            Basket basket1 = new Basket(namePr,price,count);
+            return basket1;
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
-
+        Basket basket3 = new Basket();
+        return basket3;
     }
 }
 
