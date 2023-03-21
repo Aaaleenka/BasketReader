@@ -9,7 +9,7 @@ public class ProductInCart {
 
     @Override
     public String toString() {
-        return name + " на сумму: " + finalyPrice + " руб.";
+        return name + " " + finalyPrice;
     }
 
     public int getPrice() {

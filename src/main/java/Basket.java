@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +14,11 @@ public class Basket {
         this.nameProduct = name;
         this.priceProduct = price;
     }
+
+    public Basket(List<ProductInCart> cart) {
+        this.cart = cart;
+    }
+
 
     public void printList() {
         int i = 0;
@@ -44,23 +46,35 @@ public class Basket {
 
     public void saveTxt(File textFile) throws IOException {
         try (PrintWriter out = new PrintWriter(textFile);) {
-            out.println(cart);
+            out.println(cart.size());
+            for (int i=0; i<cart.size(); i++){
+                ProductInCart element0 = cart.get(i);
+                out.println(element0.toString());
+            }
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
     }
 
-    public static void loadFromTxtFile(File textFile) throws IOException {
+    public static Basket loadFromTxtFile(File textFile) throws IOException {
+        List<ProductInCart> cart = new ArrayList<>();
+        Basket basket1 = new Basket(cart);
 
-        try (FileReader input = new FileReader(textFile);) {
-            int c;
-            while ((c = input.read()) != -1) {
-                System.out.print((char) c);
+        try (BufferedReader input = new BufferedReader(new FileReader(textFile))){
+            int count = Integer.parseInt(input.readLine());
+            for (int i=0; i<count; i++)
+            {
+                String s = input.readLine();
+                String[] parts = s.split(" ");
+                cart.add(new ProductInCart(parts[0], Integer.parseInt(parts[1])));
+
             }
+            basket1 = new Basket(cart);
+            return basket1;
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
-
+        return basket1;
     }
 }
 

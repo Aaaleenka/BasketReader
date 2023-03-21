@@ -62,9 +62,9 @@ public class Main {
                 }
             }
         }
+
+
         //basket.printBasket();
-
-
         //записываем в "log.csv"
         //ClientLog lg = new ClientLog();
         //File newFile = new File("log.csv");
@@ -78,13 +78,11 @@ public class Main {
         //System.out.println("Ваша корзина:");
         //basket.loadFromTxtFile(newFile1);
 
-        if (load.enabled) {
-            //считываем из файла корзину (но ведь мы этого еще не делали)
-            // ну и он false), может в других задачах допишем? Или сейчас писать?
-        }
-
         if (save.enabled) {
             basket.saveTxt(save.fileName);
+        }
+        if (load.enabled) {
+            basket.loadFromTxtFile(load.fileName).printBasket();
         }
         if (log.enabled) {
             lg.exportAsCSV(log.fileName, listClientLogs);
