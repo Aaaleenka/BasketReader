@@ -40,7 +40,6 @@ public class Main {
         //basket.printBasket();
         File newFile = new File("basket.bin");
         basket.saveBin(newFile);
-        System.out.println("Ваша корзина:");
-        basket.loadFromBinFile(newFile);
+        basket.loadFromBinFile(newFile).printBasket();
     }
 }

@@ -9,9 +9,15 @@ public class Basket implements Serializable {
     protected String[] nameProduct;
     protected int[] priceProduct;
 
+    protected List<ProductInCart> cart = new ArrayList<>();
+
     public Basket(String[] name, int[] price) {
         this.nameProduct = name;
         this.priceProduct = price;
+    }
+
+    public Basket(List<ProductInCart> cart){
+        this.cart = cart;
     }
 
     public void printList() {
@@ -21,8 +27,6 @@ public class Basket implements Serializable {
             i++;
         }
     }
-
-    protected List<ProductInCart> cart = new ArrayList<>();
 
     public void addToCart(int number, int amount) {
         String name = nameProduct[number];
@@ -49,19 +53,17 @@ public class Basket implements Serializable {
         }
     }
 
-    public static void loadFromBinFile(File file) throws Exception {
-
+    public static Basket loadFromBinFile(File file) throws Exception {
+        Basket basket = null;
         try (FileInputStream fis = new FileInputStream(file);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
-
             List<ProductInCart> cart = null;
             cart = (List<ProductInCart>) ois.readObject();
-            System.out.print(cart.toString());
-
+            basket = new Basket(cart);
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
-
+    return basket;
 
     }
 }
