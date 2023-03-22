@@ -79,7 +79,7 @@ public class Basket {
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
-        Basket basket3 = new Basket();
+        Basket basket3 = null;
         return basket3;
     }
 }
